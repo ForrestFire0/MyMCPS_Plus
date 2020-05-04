@@ -1,0 +1,3 @@
+C:\Users\Forrest Milner\Projects\MyMCPS_plus\obj\Any CPU\Debug\MyMCPS_plus.pyproj.CoreCompileInputs.cache
+C:\Users\Forrest Milner\Projects\MyMCPS_plus\bin\Microsoft.PythonTools.WebRole.dll
+C:\Users\Forrest Milner\Projects\MyMCPS_plus\bin\wfastcgi.py

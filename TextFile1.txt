@@ -1,0 +1,47 @@
+['AP BC CALCULUS B', 'A', 90.0, 'Waggoner, Ryan A', 'Ryan_A_Waggoner@mcpsmd.org', '34920001', '01']
+[
+	[
+		{'Id': 823116, 'CategoryGrade': 'B', 'Description': 'All Tasks/Assessments (90)', 'OrganizationId': 782, 'Percent': 88.9, 'PointsEarned': '24.00', 'PointsPossible': '27.00', 'SectionId': '34920001', 'StudentId': 404319, 'TermId': 'MP4', 'Weight': '90.000'}, 
+		{'Id': 823117, 'CategoryGrade': 'A', 'Description': 'HW for Prac/Prep (10)', 'OrganizationId': 782, 'Percent': 100.0, 'PointsEarned': '10.00', 'PointsPossible': '10.00', 'SectionId': '34920001', 'StudentId': 404319, 'TermId': 'MP4', 'Weight': '10.000'}, {}
+	], 
+	[
+		{'Id': 23211, 'AssignedDate': '2020-04-17 00:00:00.0', 'AssignmentId': 'H21256311', 'AssignmentType': 'HW for Prac/Prep (10)', 'Description': 'Unit 1 Practice Problems', 'DueDate': '2020-04-20 00:00:00.0', 'Note': '', 'Possible': '10', 'SectionId': '34920001', 'Weight': '', 'Grade': 'A', 'Missing': '0', 'Percent': '', 'Points': '10.0'}, 
+		{'Id': 23208, 'AssignedDate': '2020-04-17 00:00:00.0', 'AssignmentId': 'H21256265', 'AssignmentType': 'All Tasks/Assessments (90)', 'Description': 'PC Unit 1 FRQ A #1', 'DueDate': '2020-04-20 00:00:00.0', 'Note': '', 'Possible': '9', 'SectionId': '34920001', 'Weight': '', 'Grade': 'B', 'Missing': '0', 'Percent': '', 'Points': '8.0'}, 
+		{'Id': 23207, 'AssignedDate': '2020-04-17 00:00:00.0','AssignmentId': 'H21256304', 'AssignmentType': 'All Tasks/Assessments (90)', 'Description': 'PC Unit 1 FRQ B', 'DueDate': '2020-04-20 00:00:00.0', 'Note': '', 'Possible': '9', 'SectionId': '34920001', 'Weight': '', 'Grade': 'B', 'Missing': '0', 'Percent': '', 'Points': '8.0'}, 
+		{'Id': 23209, 'AssignedDate': '2020-04-17 00:00:00.0', 'AssignmentId': 'H21256282', 'AssignmentType': 'All Tasks/Assessments (90)', 'Description': 'PC Unit 1 FRQ A #2', 'DueDate': '2020-04-20 00:00:00.0', 'Note': '', 'Possible': '9', 'SectionId': '34920001', 'Weight': '', 'Grade': 'B', 'Missing': '0', 'Percent': '', 'Points': '8.0'}, {}
+	]
+]
+['DIGITAL ELECT B', 'A', 94.3, "O'Neil, Matthew V", "Matthew_O'Neil@mcpsmd.org", '51573206', '04']
+[
+	[
+		{'Id': 870281, 'CategoryGrade': 'A', 'Description': 'Formative (50)', 'OrganizationId': 782, 'Percent': 94.3, 'PointsEarned': '33.00', 'PointsPossible': '35.00', 'SectionId': '51573206', 'StudentId': 404319, 'TermId': 'MP4', 'Weight': '50.000'}, 
+		{'Id': 1, 'CategoryGrade': 'NG', 'Description': 'Summative (40)', 'OrganizationId': 782, 'Percent': 0, 'PointsEarned': '0', 'PointsPossible': '0', 'SectionId': '51573206', 'StudentId': 404319, 'TermId': 'MP4', 'Weight': '40.000'}, 
+		{'Id': 1, 'CategoryGrade': 'NG', 'Description': 'HW for Prac/Prep (10)', 'OrganizationId': 782, 'Percent': 0, 'PointsEarned': '0', 'PointsPossible': '0', 'SectionId': '51573206', 'StudentId': 404319, 'TermId': 'MP4', 'Weight': '10.000'}, 
+		{}
+	], 
+	[
+		{'Id': 23444, 'AssignedDate': '2020-01-28 00:00:00.0', 'AssignmentId': 'H21259667', 'AssignmentType': 'Formative (50)', 'Description': 'Activity 3.2.1 Asynchronous Counters: Small Scale Integration (SSI) Up/Down Counters', 'DueDate': '2020-04-25 00:00:00.0', 'Note': '', 'Possible': '20', 'SectionId': '51573206', 'Weight': '', 'Grade': 'A', 'Missing': '0', 'Percent': '', 'Points': '18.0'}, 
+		{'Id': 23440, 'AssignedDate': '2020-01-28 00:00:00.0', 'AssignmentId': 'H21259666', 'AssignmentType': 'Formative (50)', 'Description': 'Activity 3.1.3 Flip-Flop Applications: Shift Registers', 'DueDate': '2020-04-25 00:00:00.0', 'Note': '', 'Possible': '15', 'SectionId': '51573206', 'Weight': '', 'Grade': 'A', 'Missing': '0', 'Percent': '', 'Points': '15.0'}, 
+		{}
+	]
+]
+
+['AP Computer Science JAVA B', 'A', 100.0, 'Gaspar, Teresa A', 'Teresa_A_Gaspar@mcpsmd.org', '29020003', '05']
+
+[
+	[
+		{'Id': 835630, 'CategoryGrade': 'A', 'Description': 'All Tasks/Assessments (100)', 'OrganizationId': 782, 'Percent': 100.0, 'PointsEarned': '30.00', 'PointsPossible': '30.00', 'SectionId': '29020003', 'StudentId': 404319, 'TermId': 'MP4', 'Weight': '100.00'}, {}
+	], 
+	[
+		{'Id': 24829, 'AssignedDate': '2020-06-15 00:00:00.0', 'AssignmentId': 'H21232564', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': 'CodeHS Inheritance 9.5 9.7', 'DueDate': '2020-06-19 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''}, 
+		{'Id': 24828, 'AssignedDate': '2020-06-08 00:00:00.0', 'AssignmentId': 'H21232561', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': 'CodeHS Inheritance 9.4 9.5', 'DueDate': '2020-06-12 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''}, 
+		{'Id': 24827, 'AssignedDate': '2020-06-01 00:00:00.0', 'AssignmentId': 'H21232558', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': 'CodeHS Inheritance 9.2 9.3 ', 'DueDate': '2020-06-05 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''},
+		{'Id': 24826, 'AssignedDate': '2020-05-18 00:00:00.0', 'AssignmentId': 'H21232552', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': 'CodeHS Inheritance 9.1', 'DueDate': '2020-05-29 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''}, 
+		{'Id': 24830, 'AssignedDate': '2020-05-18 00:00:00.0', 'AssignmentId': 'H21232567', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': 'FRQs Hailstone; GameSpinner; ReviewCollector', 'DueDate': '2020-05-22 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''}, 
+		{'Id': 24825, 'AssignedDate': '2020-05-11 00:00:00.0', 'AssignmentId': 'H21232543', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': ' FRQs Recipients; Wordset; Note', 'DueDate': '2020-05-15 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''}, 
+		{'Id': 24824, 'AssignedDate': '2020-05-04 00:00:00.0', 'AssignmentId': 'H21232540', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': ' FRQs Experiment; Sentence; PasswordChecker', 'DueDate': '2020-05-08 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''}, 
+		{'Id': 24823, 'AssignedDate': '2020-04-27 00:00:00.0', 'AssignmentId': 'H21232537', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': 'FRQs DigitalClock; StringUtil; Item', 'DueDate': '2020-05-01 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': '', 'Missing': '', 'Percent': '', 'Points': ''}, 
+		{'Id': 24822, 'AssignedDate': '2020-04-20 00:00:00.0', 'AssignmentId': 'H21232534', 'AssignmentType': 'All Tasks/Assessments (100)', 'Description': 'FRQs IndvidualStudy; PigLatin; FourDigitNumber', 'DueDate': '2020-04-24 00:00:00.0', 'Note': '', 'Possible': '30', 'SectionId': '29020003', 'Weight': '', 'Grade': 'A', 'Missing': '0', 'Percent': '', 'Points': '30.0'}, 
+		{}
+	]
+]
