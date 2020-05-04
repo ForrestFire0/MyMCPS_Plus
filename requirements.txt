@@ -12,3 +12,4 @@ python-dotenv==0.10.3
 requests==2.20.1
 Werkzeug==0.15.3
 WTForms==2.2.1
+flask-sqlalchemy==2.4.1

@@ -1,4 +1,5 @@
-# This is the initiation file that creates our module, here we configure our application
+# This is the initiation file that creates our module, here we bring together different components.
+
 # Import flask
 from flask import Flask
 # Import ssl forcer
@@ -13,19 +14,29 @@ from flask_wtf.csrf import CSRFProtect
 from dotenv import load_dotenv
 load_dotenv()
 
+#SQL database imports.
+from flask_sqlalchemy import SQLAlchemy
+
 # Create the flask app
 app = Flask(__name__)
-
 # Configure the secret key, which is needed for the application
 app.config['SECRET_KEY'] = os.getenv('sc')
 # Set the session type to filesystem because the default system won't work for our purposes
 app.config['SESSION_TYPE'] = 'filesystem'
+#set up database
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
 # Active sessions for the app
+
 Session(app)
 # Activate csrf protection
 csrf = CSRFProtect(app)
+
 # Add ssl
-SSLify(app)
+if os.getenv('ssl') == 1:
+    SSLify(app)
+
+#add a database
+db = SQLAlchemy(app);
 
 # Import the routes here 
 from gradedisplay import routes

@@ -1,22 +1,37 @@
-{% extends "layout.html" %}
-{% block content %}
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='light.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
+    <title>CheckMCPS - Sign Up</title>
+
+</head>
+<body>
     <div class="col-md-6 offset-md-3 info">
         <legend class="border-bottom mb-4">About</legend>
-        MyMCPS++ is a student created grade veiwer that was made to replace myMCPS portal (meaning that a moblie version <b>WON'T</b> be released).<br> Furthermore, this project is most likely not going to be updated or edited a lot, there are no more plans for this project.<br>If you want to see a demo, click <b><a href="/dem">here</a></b>.<br><br>
-        <h5>This website was made using the following: </h5>
-        <div class="list-group">
-            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" class="list-group-item list-group-item-action"><i class="fab fa-js-square"></i> Javascript</a>
-            <a href="https://www.python.org/" target="_blank" class="list-group-item list-group-item-action"><i class="fab fa-python"></i> Python</a>
-            <a href="http://flask.pocoo.org/" target="_blank" class="list-group-item list-group-item-action">Flask (Python Framework)</a>
-            <a href="https://getbootstrap.com/" target="_blank" class="list-group-item list-group-item-action">Bootstrap</a>
-            <a href="https://jquery.com/" target="_blank" class="list-group-item list-group-item-action">jQuery (Javascript library)</a>
-            <a href="https://fontawesome.com/" target="_blank" class="list-group-item list-group-item-action"><i class="fab fa-font-awesome-flag"></i> Font Awesome</a>
-            <a href="https://www.flaticon.com" target="_blank" class="list-group-item list-group-item-action">Flaticon</a>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5" target="_blank" class="list-group-item list-group-item-action"><i class="fab fa-html5"></i> HTML 5</a>
-            <a href="https://developer.mozilla.org/en-US/docs/Web/CSS" target="_blank" class="list-group-item list-group-item-action"><i class="fab fa-css3-alt"></i> CSS 3</a> <br>
-        </div>
-        Veiw my open source code on <a href="https://github.com/AnuragGowda/MyMCPS_Plus"  target="_blank"><i class="fab fa-github"></i> Github (now open)<i class="fas fa-external-link-alt fa-xs ext"></i></a>
-        <br><br><br><b>This app is not condoned, supported, or sponsored by Montgomery County Public Schools in any way.</b> In accordance with MCPS Regulations, you can find our privacy policy <a href="https://docs.google.com/document/d/1vrzhYUKvplhCa-lTlbnGFeJ6TBPMMvTds0RZz1BlfQk/edit?usp=sharing">here</a>.
-
+        WE STOLE THIS CODE. We are trying to make a seperate project, and are using the Flask Framwork as a stating point for this project and also using the communications between the app and MCPS. Our product is vastly different than the original product. The code for this website was taken from <a> https://github.com/AnuragGowda/MyMCPS_Plus </a>
+        <b>This app is not condoned, supported, or sponsored by Montgomery County Public Schools in any way.</b> We dont yet have a privacy policy, so please dont sue us.
     </div>
-{% endblock content %}
+    <div class="col-md-6 offset-md-3 info">
+        <legend class="border-bottom mb-4">What data do we store?</legend>
+        We have tried to make this post easily read in plain English. <br> <br>
+        We <b>DO NOT</b> store your password for myMCPS or Google Classroom. Here is a list of information we do store on our servers. The italics is the reason we choose to indefiniently keep this information.
+           <ul>
+               <li>
+                   Your ID Number - <i>To remember who has used this site. We also associate your other data with this ID number.</i>
+               </li>
+               <li>
+                   Some or all of the assignments you have accessed via this site, from this quarter or past quarters, accessed via myMCPS or any other connected platform - <i>To display the assignments you have 'checked' off, and to allow this data to be persistent between visits.</i>
+               </li>
+           </ul>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
