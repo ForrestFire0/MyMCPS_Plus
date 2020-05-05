@@ -191,9 +191,9 @@ def load_data(form):
 
 # Decorator before_request, makes the following function run when they are
 # fetching the website
-@app.before_request
 # Function that delete old session information so that the server won't run out
 # of memory with useless session info
+@app.before_request
 def cleanSessionData():
     '''clean the old session data on the server'''
     # Im using an exception just in case I'm not able to find the data or
@@ -271,12 +271,13 @@ def login():
         # the data to MyMCPS
         form['account'], form['ldappassword'], form['pw'] = request.form['username'], request.form['password'], '0'
         
-        print("User " + str(request.form['username']) + ' is signing in')
-       
+        studentID = request.form['username']
+        print("User " + str(studentID) + ' is signing in')
 
         # Store the output of the load_data function in data when we send the
         # form to the fucntion
         data = load_data(form)
+
         # If there actually is data, remember that the function returns none
         # when the credentials are invalid, we need to set up some things
         if data:
@@ -285,21 +286,18 @@ def login():
             #googleClassroomAssignmens = getGoogleClassroomAssignments()
 
             #get the database id of the current student.
-            session['userID'] = User.query.filter_by(schoolID=request.form['username']).first().id
-
-            #cross check the database
-            addAssignments(myMCPS_Assignments)
-
-            session['assignments'] = getAssignments()
-
-            #for assignment in session.get('assignments', ''):
-            #    print(str(assignment['Description']))
-            
+            userID = User.query.filter_by(schoolID=studentID).first().id
+            session['userID'] = userID
+            session['studentID'] = studentID
             # Set the session login variable to true
             session['login'] = True
-            # Redirect them to the grades page
-            print("redirecting to assignments")
+            #cross check the database
+
+            addAssignments(myMCPS_Assignments)
+
+            
             return redirect(url_for('assignments'))
+
         # However, if the function returns none, this code runs
         else:
             # Simply tell the user that the login was unsuccessful
@@ -381,44 +379,62 @@ def dem():
 
 @app.route('/assignments')
 def assignments():
-    #if not session.get('login', False):
-    #    # Tell them that they haaven't logged on, but check to see it's not summer first
-    #    if not summer_break:
-    #        flash('You haven\'t logged in, please log in first!', 'danger')
-    #        # Redirect them to the login page
-    #        return redirect(url_for('getInfo'))
-    #    else:
-    #        # Otherwise, return them to the summer screen
-    #        return redirect(url_for('summer'))
-    #print("Rendering Template. ")
-    return render_template('assignments.html', title = 'Assignments', assignments=session.get('assignments', ''))
+    if not session.get('login', False):
+        # Tell them that they haaven't logged on, but check to see it's not summer first
+        if not summer_break:
+            flash('You haven\'t logged in, please log in first!', 'danger')
+            # Redirect them to the login page
+            return redirect(url_for('getInfo'))
+        else:
+            # Otherwise, return them to the summer screen
+            return redirect(url_for('summer'))
 
+    print("Rendering Template. ")
 
-#returns the master list of assignments for that user.
-def getAssignments():
-    return User.query.get(session.get('userID', None)).assignments
+    userID = int(session.get('userID'))
+    dummy_var = User.query.get(userID).assignments
+
+    return render_template('assignments.html', assignments=dummy_var)
 
 #updates the users master list of assignments with the new data we find.
 def addAssignments(assignments):
 
     databaseID = session.get('userID', None)
+    studentID = session.get('studentID')
+
+    print(str(assignments))
 
     for ass in assignments:
+        
         done = bool(ass['Points'] != '0' and ass['Points']) #its done if it didnt get a 0 and its not an emply string.
-        db_assignment = Assignment(name=ass['Description'], dueDate=datetime.strptime(ass['DueDate'], "%Y-%m-%d %H:%M:%S.%f"), completed=done, studentID = databaseID)
-        #if the assignment does not already exist in the database, add it.  For
-        #now, dont worry about names and things.
-        if not existsInDatabase(ass, databaseID):
-            db.session.add(db_assignment)
-            db.session.commit()
+        corDBAssignment = Assignment.query.filter_by(studentID=studentID, name=ass['Description']).first()
+        exists = not corDBAssignment is None
 
-def existsInDatabase(assignment, databaseID):
-    return False
+        #See if the user marked it done. If they did, we don't need to update anything, unless the assignment has been completed, 
+        ##in which case we remove it from the database. Probably... update the due date later. Anyways...
+        if exists and corDBAssignment.done.data:
+            if done:
+                db.session.delete(corDBAssignment)
+
+        #if the user has not marked it done, or it doesnt exist, then figure all that crap out.
+        else:
+            if not done: #if we need to care
+                if exists: #if it exists, remove it first.
+                    db.session.delete(corDBAssignment)
+                #once it is either removed or it was never there in the first place, create a new one, and add it.
+                db_assignment = Assignment(name=ass['Description'], dueDate=datetime.strptime(ass['DueDate'], "%Y-%m-%d %H:%M:%S.%f"), completed=done, studentID = databaseID)
+                db.session.add(db_assignment)
+            else: # the assignment is completed. If it exists, remove it. I understand this could be simplified, but I don't care.
+                if exists:
+                    db.session.delete(corDBAssignment)
+    #finally, after all that madness, commit all those changes.
+    db.session.commit()
+
+        
 
 # Decorator that makes the following function handle the about page on the
 # website
 @app.route('/about')
-# Actual function that handles everything
 def about():
     # Since this page is quite simple, all we have to do is return the html
     # template
@@ -427,7 +443,6 @@ def about():
 # Decorator that makes the following function handle the /contact page on the
 # website
 @app.route('/contact')
-# Again the actual function
 def contact():
     # Like the about page, there isn't much we need to do, simply send the
     # contact page
@@ -436,8 +451,6 @@ def contact():
 # Decorator that makes the following function handle the /logout "page" on the
 # website, not really a page, but...
 @app.route('/logout')
-# Actual function, so this page isn't really an actual page, it just logs the
-# user out pretty much...  hence the name
 def logout():
     # Set the session value of the login to be false
     session['login'] = False
@@ -451,18 +464,16 @@ def logout():
 # domain name (like mymcpsplus.herokuapp.com/blahblahblah), this would handle
 # the error that would occur
 @app.errorhandler(404)
-# Actual function that handles the page not being found
 def pageNotFound(e):
     # Tell the user they tried to go to a non existent page
     flash('You have entered a url that does not exist! You have been redirected.', 'warning')
     # Redirect them to the login page
-    return redirect(url_for('getInfo'))
+    return redirect(url_for('login'))
 
 # Decorator that handles the error 500 which is an internal server error, which
 # is a pretty general error where something goes wrong, but the website doesn't
 # really know what caused the crash
 @app.errorhandler(500)
-# Actual function
 def crash(e):
     # Store the crash message in the session
     session['crash'] = str(e)
@@ -473,7 +484,6 @@ def crash(e):
 # missing on the server for various reasons, I put this in just in case, but I
 # don't think it will ever trigger
 @app.errorhandler(410)
-# Actual function
 def deletedInfo():
     # Tell the user that a problem has occurred
     flash('It seems that the data you are trying to access has been mysteriously deleted or changed! If this problem persists, contact the creator of this website.', 'danger')

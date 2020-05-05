@@ -14,16 +14,16 @@ class LoginForm(FlaskForm):
     # Add a submit feild
     submit = SubmitField('Login')
     
-    #def validate_username(self, username): #see if our user has signed up.
-    #    if not len(str(username.data)) == 6:
-    #        print("Error: not six digits.")
-    #        raise ValidationError("Enter your six digit numerical ID");
-    #    else: 
-    #        print("was six digits")
-    #        user = User.query.filter_by(schoolID=username.data).first()
-    #        if not user: #this user does not exist in our database
-    #            print("not in database")
-    #            raise ValidationError("This ID has not signed up.")
+    def validate_username(self, username): #see if our user has signed up.
+        if not len(str(username.data)) == 6:
+            print("Error: not six digits.")
+            raise ValidationError("Enter your six digit numerical ID");
+        else: 
+            print("was six digits")
+            user = User.query.filter_by(schoolID=username.data).first()
+            if not user: #this user does not exist in our database
+                print("not in database")
+                raise ValidationError("This ID has not signed up.")
 
 
 

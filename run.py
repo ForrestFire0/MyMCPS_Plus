@@ -5,3 +5,5 @@ from gradedisplay import app
 if __name__ == '__main__':
     # The code that 'runs' the app, set the host to the machine it is running on, also turn off debug mode which is actually the default, so this is kind of unnecessary
         app.run()
+
+        

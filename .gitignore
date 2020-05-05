@@ -1,1 +1,6 @@
 .env
+flask_session/*
+*.pyc
+MyMCPS_plus.pyproj
+*.db
+*.__wz_cache
