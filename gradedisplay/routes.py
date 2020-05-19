@@ -1,9 +1,10 @@
 from flask import render_template, url_for, request, flash, redirect, make_response, session # Import some built in functions of flask
 from gradedisplay import app, db # Import the app from our package, for decorators.  Import Database.
 from gradedisplay.form import LoginForm, SignupForm #Form imports
-from gradedisplay.models import User, Assignment #models imports
-from gradedisplay.data import sortData
+from gradedisplay.models import User, Assignment, Period #models imports
+from gradedisplay.data import getDBAssignments, getDBPeriods
 from datetime import datetime
+from time import time
 
 # Import sessions
 from flask_session import Session
@@ -270,63 +271,34 @@ def login():
         # beginning of the program, so that the form is complete when we post
         # the data to MyMCPS
         form['account'], form['ldappassword'], form['pw'] = request.form['username'], request.form['password'], '0'
-        
+        session['login'] = True
         studentID = request.form['username']
-        print("User " + str(studentID) + ' is signing in')
+        session['studentID'] = studentID
+        print("User " + str(studentID) + ' is signing in.')
 
-        # Store the output of the load_data function in data when we send the
-        # form to the fucntion
-        data = load_data(form)
+        return redirect(url_for('assignments'))
 
-        # If there actually is data, remember that the function returns none
-        # when the credentials are invalid, we need to set up some things
-        if data:
-            # Set the session grade data to the data returned by the function
-            myMCPS_Assignments = sortData(data)
-            #googleClassroomAssignmens = getGoogleClassroomAssignments()
-
-            #get the database id of the current student.
-            userID = User.query.filter_by(schoolID=studentID).first().id
-            session['userID'] = userID
-            session['studentID'] = studentID
-            # Set the session login variable to true
-            session['login'] = True
-            #cross check the database
-
-            addAssignments(myMCPS_Assignments)
-
-            
-            return redirect(url_for('assignments'))
-
-        # However, if the function returns none, this code runs
-        else:
-            # Simply tell the user that the login was unsuccessful
-            flash('Login Unsuccessful, Try Again.', 'danger')
     # This section here tells the app to send the user the home page when they
     # connect to our website
     return render_template('home.html', title = 'Login', form=login)
 
 
 #handle checking the box
-#@app.route("/set/<int:assignmentID>/<int:state>")
-#def set(assignmentID, state):
-#    Assignment.query.get(assignmentID).completed = bool(state)
-#    db.session.commit()
-#    print("Successfully set assignment " + str(assignmentID) + " to " +
-#    str(state))
+@app.route('/set/<assignmentID>/<state>')
+def set(assignmentID, state):
+    if assignmentID == "sortingMethod":
+        user=User.query.filter_by(schoolID=session.get('studentID')).first()
+        user.sortingMethod = state
+        return ("Succsesssss")
+    else:
+        a = Assignment.query.get(assignmentID)
+        a.completed = state == '1'
+        db.session.commit()
+        print("Set assignment " + str(assignmentID) + " to " + str(state))
+        return ("Succsesssss")
     
 
-# Decorator to make the following function handle the /summer
-@app.route('/summer')
-# Actual function
-def summer():
-    # Check if it's actually summer, the use could've just entered it into the
-    # url
-    if not summer_break:
-        # If its not summer, we return them to the login screen
-        return redirect(url_for('getInfo'))
-    # Return the html template if it is
-    return render_template('break.html')
+
 
 # I just made a demonstrate feature for summer since I disabled the login
 # feature, so normally, dutring the school year to see this, you would have to
@@ -379,58 +351,82 @@ def dem():
 
 @app.route('/assignments')
 def assignments():
+    
+    #load some numbers from the signin page.
+
     if not session.get('login', False):
-        # Tell them that they haaven't logged on, but check to see it's not summer first
-        if not summer_break:
-            flash('You haven\'t logged in, please log in first!', 'danger')
-            # Redirect them to the login page
-            return redirect(url_for('getInfo'))
-        else:
-            # Otherwise, return them to the summer screen
-            return redirect(url_for('summer'))
+        return redirect(url_for('login'))
 
-    print("Rendering Template. ")
+    studentID = session.get('studentID')
+    user = User.query.filter_by(schoolID=studentID).first()
+    
+    sortingMethod = user.sortingMethod
 
-    userID = int(session.get('userID'))
-    dummy_var = User.query.get(userID).assignments
+    #Here we need to load all the data. 
 
-    return render_template('assignments.html', assignments=dummy_var)
+    #First, MCPS data.
+    mcps_data = load_data(form)
+    if mcps_data:
+        #Note: 'getDBAssignments' gets assignments as an array of 'Assignment' models, not a python key thingamabob.
+        myMCPS_Classes = getDBPeriods(mcps_data, user.id)
+        addPeriods(myMCPS_Classes, user.id)
+        
+        myMCPS_Assignments = getDBAssignments(mcps_data, user.id)
+        addAssignments(myMCPS_Assignments, user.id)
+
+    else:
+        flash("There is a very big problem. We couldent collect your MCPS data!", 'danger')
+        return redirect(url_for('login'))
+    
+    #googleClassroomAssignmens = getGoogleClassroomAssignments()
+    #canvasAssignmens = getCanvasAssignments()
+            
+    return render_template('assignments.html', classes=user.classes, sortingMethod=sortingMethod)
 
 #updates the users master list of assignments with the new data we find.
-def addAssignments(assignments):
-
-    databaseID = session.get('userID', None)
+def addAssignments(assignments, userID):
     studentID = session.get('studentID')
 
-    print(str(assignments))
+    print('Adding assignments for SID ' + str(studentID) + '. and DBI ' + str(userID))
 
     for ass in assignments:
-        
-        done = bool(ass['Points'] != '0' and ass['Points']) #its done if it didnt get a 0 and its not an emply string.
-        corDBAssignment = Assignment.query.filter_by(studentID=studentID, name=ass['Description']).first()
+
+        corDBAssignment = Assignment.query.filter_by(userDBI=userID, name=ass.name).first()
         exists = not corDBAssignment is None
+        mcpsDone = ass.completed
 
-        #See if the user marked it done. If they did, we don't need to update anything, unless the assignment has been completed, 
-        ##in which case we remove it from the database. Probably... update the due date later. Anyways...
-        if exists and corDBAssignment.done.data:
-            if done:
+        if exists: #we have a record
+            if mcpsDone: #mcps says its done. Remove it from the list.
                 db.session.delete(corDBAssignment)
+            if not corDBAssignment.completed: 
+                #if the user did not mark it as completed, we will update the assignment.
+                db.session.delete(corDBAssignment)
+                db.session.add(ass)
+        else: # no record in DB.
+            if not mcpsDone:
+                print('New assignment found: ' + ass.name + ' done: ' + str(ass.completed))
+                db.session.add(ass)
 
-        #if the user has not marked it done, or it doesnt exist, then figure all that crap out.
-        else:
-            if not done: #if we need to care
-                if exists: #if it exists, remove it first.
-                    db.session.delete(corDBAssignment)
-                #once it is either removed or it was never there in the first place, create a new one, and add it.
-                db_assignment = Assignment(name=ass['Description'], dueDate=datetime.strptime(ass['DueDate'], "%Y-%m-%d %H:%M:%S.%f"), completed=done, studentID = databaseID)
-                db.session.add(db_assignment)
-            else: # the assignment is completed. If it exists, remove it. I understand this could be simplified, but I don't care.
-                if exists:
-                    db.session.delete(corDBAssignment)
-    #finally, after all that madness, commit all those changes.
     db.session.commit()
 
-        
+#this does the same thing for assignments as it does for classes.
+def addPeriods(classes, userID):
+    studentID = session.get('studentID')
+
+    print('Adding periodes for SID ' + str(studentID) + '. and DBI ' + str(userID))
+
+    for cl in classes:
+
+        dbc = Period.query.filter_by(userDBI=userID, name=cl.name).first()
+        exists = not dbc is None
+
+        if exists: #we have a record
+            pass # we already have the class, dont mess with it.
+        else: # no record in DB.
+            print('New class found: ' + cl.name + ' Teacher: ' + str(cl.teacher))
+            db.session.add(cl)
+
+    db.session.commit()
 
 # Decorator that makes the following function handle the about page on the
 # website
@@ -439,14 +435,6 @@ def about():
     # Since this page is quite simple, all we have to do is return the html
     # template
     return render_template('about.html', title = 'About Page')
-
-# Decorator that makes the following function handle the /contact page on the
-# website
-@app.route('/contact')
-def contact():
-    # Like the about page, there isn't much we need to do, simply send the
-    # contact page
-    return render_template('contact.html', title = 'Contact Page')
 
 # Decorator that makes the following function handle the /logout "page" on the
 # website, not really a page, but...
@@ -465,6 +453,7 @@ def logout():
 # the error that would occur
 @app.errorhandler(404)
 def pageNotFound(e):
+    print(e)
     # Tell the user they tried to go to a non existent page
     flash('You have entered a url that does not exist! You have been redirected.', 'warning')
     # Redirect them to the login page

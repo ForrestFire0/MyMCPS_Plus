@@ -31,8 +31,8 @@ class SignupForm(FlaskForm):
     schoolID = StringField("schoolID", validators=[Length(min=6, max=6)], render_kw={"placeholder": "Enter Your School Issued ID"})
     submit = SubmitField("Sign Up")
 
-    #def validate_schoolID(self, schoolID):
-    #    user = User.query.filter_by(schoolID=schoolID.data).first()
-    #    if user:
-    #        raise ValidationError("This ID has already signed up. Please Sign In.")
+    def validate_schoolID(self, schoolID):
+        user = User.query.filter_by(schoolID=schoolID.data).first()
+        if user:
+            raise ValidationError("This ID has already signed up. Please Sign In.")
         

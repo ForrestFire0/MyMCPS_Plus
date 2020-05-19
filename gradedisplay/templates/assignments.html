@@ -1,11 +1,35 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div class="col-md-6">
-        {% for assignment in assignments %}
-        <div class="assignment">
-            <input type="checkbox" class="checkbox"> {{assignment.name}}
+    {% for class in classes%}
+        {% if class.assignments %}
+        <div class="col-md-6">
+            <h1>{{class.name}}</h1>
+            <h2>Teacher: {{class.teacher}}</h2>
+            {% for assignment in class.assignments %}
+            <div class="assignment">
+                {% if assignment.completed %}
+                <input type="checkbox" class="checkbox" id={{assignment.id}} checked="checked"> {{assignment.name}}
+                {% else %}
+                <input type="checkbox" class="checkbox" id={{assignment.id}}> {{assignment.name}}
+                {% endif %}
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-Helloodfoidfoidf
+        {% endif %}
+    <br>
+    {% endfor %}
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type=text/javascript>
+    $('.checkbox').change(function () {
+
+        //get the name of the thing
+        $.getJSON('/set/' + this.id + '/' + (this.checked ? '1' : '0'),
+            function (data) {
+                //do nothing
+            });
+        return false;
+    });
+</script>
 {% endblock content %}
