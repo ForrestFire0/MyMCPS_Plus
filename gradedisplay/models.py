@@ -5,6 +5,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True) #the long id number of the student for the db.
     schoolID = db.Column(db.Integer, nullable=False, unique=True) #the id number of the student.
     signupDate = db.Column(db.DateTime)
+    lastUpdateDate = db.Column(db.DateTime)
     sortingMethod = db.Column(db.String(1), nullable=True)
     assignments = db.relationship('Assignment', backref="student", lazy=True)
     classes = db.relationship('Period', backref='period', lazy=True)

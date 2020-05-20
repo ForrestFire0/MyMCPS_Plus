@@ -20,8 +20,6 @@ def getDBAssignments(data, databaseID):
                         databaseAssignments.insert(0, dba)
                     else: 
                         databaseAssignments.append(dba)
-        
-    
     return databaseAssignments
 
 def getDBPeriods(data, databaseID):

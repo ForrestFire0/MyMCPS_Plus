@@ -217,7 +217,6 @@ def cleanSessionData():
         # about it
         flash('An error occured: ' + str(e) + '. The developer will be notified', 'danger')
 
-
 #this functions returns the signup page.
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
@@ -225,7 +224,7 @@ def signup():
     if form.validate_on_submit(): #The user successfully signed up.
 
         idnumber = int(form.schoolID.data)
-        user = User(schoolID=idnumber, signupDate=datetime.now())
+        user = User(schoolID=idnumber, signupDate=datetime.now(), lastUpdateDate=datetime.min, sortingMethod="p")
         db.session.add(user)
         db.session.commit()
         print("New User Registered. ID Number:" + form.schoolID.data)
@@ -289,65 +288,13 @@ def set(assignmentID, state):
     if assignmentID == "sortingMethod":
         user=User.query.filter_by(schoolID=session.get('studentID')).first()
         user.sortingMethod = state
-        return ("Succsesssss")
+        db.session.commit()
     else:
         a = Assignment.query.get(assignmentID)
         a.completed = state == '1'
         db.session.commit()
         print("Set assignment " + str(assignmentID) + " to " + str(state))
-        return ("Succsesssss")
-    
-
-
-
-# I just made a demonstrate feature for summer since I disabled the login
-# feature, so normally, dutring the school year to see this, you would have to
-# actually type in the keywords
-@app.route('/dem')
-# This is the function, and honestly, I'm going to allow the user to go here
-# just by typing it in the url, so it'l be easier
-def dem():
-    # Set the session login to true so that we can tell the user has logged on
-    # while the session is still active
-    session['login'] = True
-    # Also in the session, create a grade data variable and assign it the dummy
-    # example data
-    session['gradeData'] = [['0','0'],
-                            
-                            ['Class1','A',100.0,'Teacher1','teacher1@mcpsmd.org','0','01'],
-                            [[{'Id':0,'CategoryGrade':'A','Description':'Category1(34)','OrganizationId':0,'Percent':100.0,'PointsEarned':'100.0','PointsPossible':'100.0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'34.000'},
-                              {'Id':0,'CategoryGrade':'NG','Description':'Category2(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},
-                              {'Id':0,'CategoryGrade':'NG','Description':'Category3(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},
-                              {}],
-                             
-                             [{'Id':0,'AssignedDate':'2019-04-1100:00:00.0','AssignmentId':'0','AssignmentType':'Category1(34)','Description':'ExampleDescription','DueDate':'2019-04-1100:00:00.0','Note':'','Possible':'100','SectionId':'77373202','Weight':'','Grade':'A','Missing':'0','Percent':'','Points':'100.0'},{}]],
-                             
-                             ['Class2','B',80.0,'Teacher2','teacher2@mcpsmd.org','0','02'],
-                             
-                             [[{'Id':0,'CategoryGrade':'B','Description':'Category1(34)','OrganizationId':0,'Percent':80.0,'PointsEarned':'80.0','PointsPossible':'100.0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'34.000'},
-                               {'Id':0,'CategoryGrade':'NG','Description':'Category2(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},
-                               {'Id':0,'CategoryGrade':'NG','Description':'Category3(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},{}],
-                              [{'Id':0,'AssignedDate':'2019-04-1100:00:00.0','AssignmentId':'0','AssignmentType':'Category1(34)','Description':'ExampleDescription','DueDate':'2019-04-1100:00:00.0','Note':'','Possible':'100','SectionId':'77373202','Weight':'','Grade':'B','Missing':'0','Percent':'','Points':'80.0'},{}]],
-                              
-                              ['Class3','C',70.0,'Teacher3','teacher3@mcpsmd.org','0','03'],
-                              
-                              [[{'Id':0,'CategoryGrade':'C','Description':'Category1(34)','OrganizationId':0,'Percent':70.0,'PointsEarned':'70.0','PointsPossible':'100.0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'34.000'},
-                                {'Id':0,'CategoryGrade':'NG','Description':'Category2(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},
-                                {'Id':0,'CategoryGrade':'NG','Description':'Category3(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},{}],
-                               [{'Id':0,'AssignedDate':'2019-04-1100:00:00.0','AssignmentId':'0','AssignmentType':'Category1(34)','Description':'ExampleDescription','DueDate':'2019-04-1100:00:00.0','Note':'','Possible':'100','SectionId':'77373202','Weight':'','Grade':'C','Missing':'0','Percent':'','Points':'70.0'},{}]],
-                               
-                               ['Class4','D',60.0,'Teacher4','teacher4@mcpsmd.org','0','04'],
-                               [[{'Id':0,'CategoryGrade':'D','Description':'Category1(34)','OrganizationId':0,'Percent':60.0,'PointsEarned':'60.0','PointsPossible':'100.0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'34.000'},
-                               {'Id':0,'CategoryGrade':'NG','Description':'Category2(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},
-                               {'Id':0,'CategoryGrade':'NG','Description':'Category3(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},{}]
-                               ,[{'Id':0,'AssignedDate':'2019-04-1100:00:00.0','AssignmentId':'0','AssignmentType':'Category1(34)','Description':'ExampleDescription','DueDate':'2019-04-1100:00:00.0','Note':'','Possible':'100','SectionId':'77373202','Weight':'','Grade':'D','Missing':'0','Percent':'','Points':'60.0'},{}]],
-                               
-                               ['Class5','E',50.0,'Teacher5','teacher5@mcpsmd.org','0','05'],[[{'Id':0,'CategoryGrade':'E','Description':'Category1(34)','OrganizationId':0,'Percent':50.0,'PointsEarned':'50.0','PointsPossible':'100.0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'34.000'},
-                                {'Id':0,'CategoryGrade':'NG','Description':'Category2(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},
-                                {'Id':0,'CategoryGrade':'NG','Description':'Category3(33)','OrganizationId':0,'Percent':0,'PointsEarned':'0','PointsPossible':'0','SectionId':'0','StudentId':0,'TermId':'MP4','Weight':'33.000'},{}],
-                                [{'Id':0,'AssignedDate':'2019-04-1100:00:00.0','AssignmentId':'0','AssignmentType':'Category1(34)','Description':'ExampleDescription','DueDate':'2019-04-1100:00:00.0','Note':'','Possible':'100','SectionId':'77373202','Weight':'','Grade':'E','Missing':'0','Percent':'','Points':'50.0'},{}]]]
-    # Redirect them to the grades page
-    return redirect(url_for('assignments'))
+    return ("Succsesssss")
 
 @app.route('/assignments')
 def assignments():
@@ -362,26 +309,43 @@ def assignments():
     
     sortingMethod = user.sortingMethod
 
-    #Here we need to load all the data. 
+    #Here we need to load all the data, but only if we are more that 24 hours from the last time we loaded it.
 
-    #First, MCPS data.
-    mcps_data = load_data(form)
-    if mcps_data:
-        #Note: 'getDBAssignments' gets assignments as an array of 'Assignment' models, not a python key thingamabob.
-        myMCPS_Classes = getDBPeriods(mcps_data, user.id)
-        addPeriods(myMCPS_Classes, user.id)
+    if (datetime.now() - user.lastUpdateDate).days >= 1: #
+        print("Loading data")
+        user.lastUpdateDate = datetime.now();
+        db.session.commit()
+        #First, MCPS data.
+        mcps_data = load_data(form)
+        if mcps_data:
+            #Note: 'getDBAssignments' gets assignments as an array of 'Assignment' models, not a python key thingamabob.
+            myMCPS_Classes = getDBPeriods(mcps_data, user.id)
+            addPeriods(myMCPS_Classes, user.id)
         
-        myMCPS_Assignments = getDBAssignments(mcps_data, user.id)
-        addAssignments(myMCPS_Assignments, user.id)
+            myMCPS_Assignments = getDBAssignments(mcps_data, user.id)
+            addAssignments(myMCPS_Assignments, user.id)
 
-    else:
-        flash("There is a very big problem. We couldent collect your MCPS data!", 'danger')
-        return redirect(url_for('login'))
+        else:
+            flash("There is a very big problem. We couldent collect your MCPS data!", 'danger')
+            return redirect(url_for('login'))
     
-    #googleClassroomAssignmens = getGoogleClassroomAssignments()
-    #canvasAssignmens = getCanvasAssignments()
-            
-    return render_template('assignments.html', classes=user.classes, sortingMethod=sortingMethod)
+        #googleClassroomAssignmens = getGoogleClassroomAssignments()
+        #canvasAssignmens = getCanvasAssignments()
+    else:
+        print("Skipping Load. Last Load Date: " + str(user.lastUpdateDate))
+    A = user.classes
+
+    assignments = []
+    if sortingMethod == "m": #missing
+        missingAssignments = Assignment.query.filter_by(userDBI=user.id, missing=True).all()
+        assignments = Assignment.query.filter_by(userDBI=user.id, missing=False).all()
+        assignments = [assignments, missingAssignments]
+    elif sortingMethod == "d":
+        assignments = Assignment.query.filter_by(userDBI=user.id).order_by(Assignment.duedate.asc()).all()
+    else:
+        assignments = Assignment.query.filter_by(userDBI=user.id).all()
+
+    return render_template('assignments.html', classes1=A[:len(A)//2], classes2=A[len(A)//2:], sortingMethod=sortingMethod, assignments=assignments)
 
 #updates the users master list of assignments with the new data we find.
 def addAssignments(assignments, userID):
@@ -449,7 +413,7 @@ def logout():
 
 # Decorator that is supposed to handle the error 404 which is for pages that do
 # not exist, so for instance if the user typed some thing random after our
-# domain name (like mymcpsplus.herokuapp.com/blahblahblah), this would handle
+# domain name (like mymcpsplusplus.herokuapp.com/blahblahblah), this would handle
 # the error that would occur
 @app.errorhandler(404)
 def pageNotFound(e):

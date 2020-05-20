@@ -1,10 +1,97 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% for class in classes%}
+<div class="jumbotron">
+    <h1> CheckMCPS</h1>
+</div>
+<div class="row container-fluid">
+    <div class="col-4">
+        <div class="block">
+            <h1>Assignments</h1>
+            Sort By:
+            <select id="sortby">
+                <option value="p" {% if sortingMethod=="p" %} selected="selected" {% endif %}>Priority</option>
+                <option value="d" {% if sortingMethod=="d" %} selected="selected" {% endif %}>Date</option>
+                <option value="m" {% if sortingMethod=="m" %} selected="selected" {% endif %}>Missing</option>
+            </select>
+            <button id="changeSortingMethod">Submit</button>
+        </div>
+
+        {% if sortingMethod=="m"%}
+        <div class="missing">
+            <h1>Missing Assignments</h1>
+            {% for a in assignments[0] %}
+            {% if a.completed %}
+            <input type="checkbox" class="checkbox" id={{a.id}} checked="checked"> {{a.name}}<br>
+            {%else%}
+            <input type="checkbox" class="checkbox" id={{a.id}}> {{a.name}} <br>
+            {% endif %}
+            {%endfor%}
+        </div>
+
+        <div class="todo">
+            <h1>To-Do</h1>
+            {% for a in assignments[1]%}
+            {% if a.completed %}
+            <input type="checkbox" class="checkbox" id={{a.id}} checked="checked"> {{a.name}}<br>
+            {%else%}
+            <input type="checkbox" class="checkbox" id={{a.id}}> {{a.name}}<br>
+            {% endif %}
+            {%endfor%}
+        </div>
+
+        {%endif%}
+        {% if sortingMethod=="d"%}
+        <div class="todo">
+            <h1>To-Do</h1>
+            {% for a in assignments%}
+            {% if a.completed %}
+            <input type="checkbox" class="checkbox" id={{a.id}} checked="checked"> {{a.name}} - {{a.date}}<br>
+            {%else%}
+            <input type="checkbox" class="checkbox" id={{a.id}}> {{a.name}} - {{a.date}}<br>
+            {% endif %}
+            {%endfor%}
+        </div>
+        {%endif%}
+        {% if sortingMethod=="p"%}
+        <div class="todo">
+            <h1>To-Do</h1>
+            {% for a in assignments %}
+            {% if a.completed %}
+            <input type="checkbox" class="checkbox" id={{a.id}} checked="checked"> {{a.name}}<br>
+            {%else%}
+            <input type="checkbox" class="checkbox" id={{a.id}}> {{a.name}}<br>
+            {% endif %}
+            {%endfor%}
+        </div>
+        {%endif%}
+    </div>
+
+
+    <div class="col-3">
+        {% for class in classes1%}
         {% if class.assignments %}
-        <div class="col-md-6">
+        <div class='block'>
             <h1>{{class.name}}</h1>
-            <h2>Teacher: {{class.teacher}}</h2>
+            {{class.teacher}}
+            {% for assignment in class.assignments %}
+        <div class="assignment">
+            {% if assignment.completed %}
+            <input type="checkbox" class="checkbox" id={{assignment.id}} checked="checked"> {{assignment.name}}
+            {% else %}
+            <input type="checkbox" class="checkbox" id={{assignment.id}}> {{assignment.name}}
+            {% endif %}
+        </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <div class="col-3">
+        {% for class in classes2%}
+        {% if class.assignments %}
+        <div class='block'>
+            <h1>{{class.name}}</h1>
+            {{class.teacher}}
             {% for assignment in class.assignments %}
             <div class="assignment">
                 {% if assignment.completed %}
@@ -16,10 +103,9 @@
             {% endfor %}
         </div>
         {% endif %}
-    <br>
-    {% endfor %}
-
-
+        {% endfor %}
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type=text/javascript>
     $('.checkbox').change(function () {
@@ -29,6 +115,15 @@
             function (data) {
                 //do nothing
             });
+        return false;
+    });
+
+    $("#changeSortingMethod").click(function () {
+        sortingMethod = $("select").val()
+        $.getJSON('/set/sortingMethod/' + sortingMethod,
+            function (data) {
+            });
+        location.reload()
         return false;
     });
 </script>
