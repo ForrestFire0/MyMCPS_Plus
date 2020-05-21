@@ -46,6 +46,7 @@ ssl=1</Environment>
     <Content Include="TextFile1.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="canvastest.py" />
     <Compile Include="gradedisplay\form.py" />
     <Compile Include="gradedisplay\models.py">
       <SubType>Code</SubType>

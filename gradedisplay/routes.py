@@ -1,3 +1,18 @@
+# TODO
+# Make Priority Sort mode actually do something
+# Calculate the impact a certian assignment will have on a grade, so what percent you will get if you get a 100% on an assignment. Display this next to the thingy
+# Allow students to create new custom assignments.
+# Add support for changing quarters (AKA, make it so it will automatically remove assignments
+# Add the tutorial page with images and a comprehensive privacy statement. Make the signing page more comprehensive, so it shows the data loading. Also the canvas OAuth thing will happen here
+# Collect more data on the user.
+# Add a function that returns json for matts various apps.
+# Google classroom support
+# CANVAS API
+# Button to refresh the data manually
+# Button to clear account from all things, recollect all data.
+# Delete account functionality
+# When updating assignment info, carry over missing info
+
 from flask import render_template, url_for, request, flash, redirect, make_response, session # Import some built in functions of flask
 from gradedisplay import app, db # Import the app from our package, for decorators.  Import Database.
 from gradedisplay.form import LoginForm, SignupForm #Form imports
